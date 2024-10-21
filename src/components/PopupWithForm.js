@@ -1,10 +1,21 @@
 import closeBtn from '../images/close_icon.svg'
 
-export default function PopupWithForm({ name, title, children, isOpen }) {
+export default function PopupWithForm({
+  name,
+  title,
+  buttonLabel = 'Salvar',
+  children,
+  isOpen,
+  onClosePopup
+}) {
   return (
     <div className={`popup ${isOpen ? 'popup__opened' : ''}`}>
-      <form className={{ name }} name="editProfile">
-        <button type="button" className="popup__close-btn">
+      <form className="popup__form" name={name}>
+        <button
+          type="button"
+          className="popup__close-btn"
+          onClick={onClosePopup}
+        >
           <img
             className="popup__close-btn-icon"
             src={closeBtn}
@@ -17,7 +28,7 @@ export default function PopupWithForm({ name, title, children, isOpen }) {
           type="submit"
           className="popup__save-btn popup__button-disabled"
         >
-          Salvar
+          {buttonLabel}
         </button>
       </form>
     </div>
