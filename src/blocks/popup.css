@@ -31,7 +31,7 @@
 
 }
 .popupImg-opened{
-
+  z-index: 999;
   visibility: visible;
   opacity: 1;
 
@@ -43,7 +43,7 @@
 
 }
 .popup__opened {
-
+  z-index:999;
   visibility: visible;
   opacity: 1;
 

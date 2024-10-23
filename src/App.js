@@ -7,9 +7,6 @@ import closeBtn from './images/close_icon.svg'
 import PopupWithForm from './components/PopupWithForm'
 
 function App() {
-  // const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false)
-  // const handleOpenProfilePopup = () => {}
-
   return (
     <>
       <div className="page">
