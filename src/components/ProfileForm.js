@@ -7,6 +7,7 @@ const ProfileForm = () => {
           className="popup__input-box popup__input-box-name"
           type="text"
           name="name"
+          placeholder="Nome"
           minLength={2}
           maxLength={40}
           required=""
@@ -19,6 +20,7 @@ const ProfileForm = () => {
           className="popup__input-box popup__input-box-job"
           type="text"
           name="job"
+          placeholder="Sobre"
           minLength={2}
           maxLength={200}
           required=""
