@@ -3,9 +3,6 @@ import Main from './components/Main'
 import Footer from './components/Footer'
 import { useState } from 'react'
 
-import closeBtn from './images/close_icon.svg'
-import PopupWithForm from './components/PopupWithForm'
-
 function App() {
   return (
     <>

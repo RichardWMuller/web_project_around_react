@@ -1,4 +1,9 @@
+import { useContext } from 'react'
+import { CurrentUserContext } from '../contexts/CurrentUserContext'
+
 export default function Card({ link, name, likes, _id, onCardClick }) {
+  const currentUser = useContext(CurrentUserContext)
+
   return (
     <li className="elements__list-img">
       <div
