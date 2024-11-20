@@ -1,4 +1,4 @@
-const AddForm = ({ onUpdateTitle, onUpdateCard }) => {
+const AddForm = ({ title, link, onUpdateTitle, onUpdateCardLink }) => {
   return (
     <div className="popupAdd__input-container">
       <div className="popupAdd__control popupAdd__size">
@@ -11,6 +11,8 @@ const AddForm = ({ onUpdateTitle, onUpdateCard }) => {
           minLength={2}
           maxLength={30}
           required=""
+          value={title}
+          onChange={onUpdateTitle}
         />
         <span className="popupAdd__error" />
       </div>
@@ -23,6 +25,8 @@ const AddForm = ({ onUpdateTitle, onUpdateCard }) => {
           placeholder="Link da imagem"
           minLength={15}
           required=""
+          value={link}
+          onChange={onUpdateCardLink}
         />
         <span className="popupAdd__error" />
       </div>

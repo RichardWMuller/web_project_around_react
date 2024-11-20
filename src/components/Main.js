@@ -25,8 +25,8 @@ export default function Main() {
   const [job, setJob] = useState()
   const [avatar, setAvatar] = useState()
   const [currentUser, setCurrentUser] = useState({})
-  const [cardCreate, setCardCreate] = useState()
-  const [cardCreateTitle, setCardCreateTitle] = useState()
+  const [cardLink, setCardLink] = useState()
+  const [cardTitle, setCardTitle] = useState()
 
   // const { currentUser, setCurrentUser } = useCurrentUser()
 
@@ -74,11 +74,11 @@ export default function Main() {
   }
 
   const handleTitleChange = event => {
-    setCardCreateTitle(event.target.value)
+    setCardTitle(event.target.value)
   }
 
-  const handleCardCreate = link => {
-    setCardCreate(link.target.value)
+  const handleChangeCardLink = event => {
+    setCardLink(event.target.value)
   }
 
   const handleFormSubmit = (event, formName) => {
@@ -92,7 +92,7 @@ export default function Main() {
     }
 
     if (formName === 'addPlace') {
-      handleCreateNewCard(cardCreateTitle, cardCreate)
+      handleCreateNewCard(cardTitle, cardLink)
     }
   }
 
@@ -108,9 +108,10 @@ export default function Main() {
     closeAllPopups()
   }
 
-  async function handleCreateNewCard(title, card) {
-    await api.createCard(title, card)
-    getUser()
+  async function handleCreateNewCard(title, cardLink) {
+    const newCard = { name: title, link: cardLink }
+    await api.createCard(newCard)
+    getInitialCards()
     closeAllPopups()
   }
 
@@ -185,10 +186,13 @@ export default function Main() {
             isOpen={isAddPlacePopupOpen}
             onClosePopup={closeAllPopups}
             buttonLabel="Criar"
+            onSubmit={handleFormSubmit}
           >
             <AddForm
+              title={cardTitle}
+              link={cardLink}
               onUpdateTitle={handleTitleChange}
-              onUpdateCard={handleCardCreate}
+              onUpdateCardLink={handleChangeCardLink}
             />
           </PopupWithForm>
         )}
