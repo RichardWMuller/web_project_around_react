@@ -9,6 +9,7 @@ import { api } from '../utils/api'
 import Card from './Card'
 import ImagePopup from './ImagePopup'
 import { useRef } from 'react'
+import { CurrentUserContext } from '../contexts/CurrentUserContext'
 
 export default function Main() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false)
