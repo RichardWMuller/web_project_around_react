@@ -1,5 +1,5 @@
 import closeBtn from '../images/close_icon.svg'
-const ImagePopup = ({ srcImage, footerLabel, isOpen, onClose }) => {
+const Popup = ({ srcImage, footerLabel, isOpen, onClose }) => {
   return (
     <div className={`popup popupImg ${isOpen && 'popupImg-opened'}`}>
       <div className="popupImg-container">
@@ -17,4 +17,4 @@ const ImagePopup = ({ srcImage, footerLabel, isOpen, onClose }) => {
   )
 }
 
-export default ImagePopup
+export default Popup

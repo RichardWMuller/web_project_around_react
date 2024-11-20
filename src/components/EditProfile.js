@@ -1,4 +1,4 @@
-const ProfileForm = ({ name, job, onNameChange, onJobChange }) => {
+const EditProfile = ({ name, job, onNameChange, onJobChange }) => {
   return (
     <div className="popup__input-container">
       <div className="popup__control popup__size">
@@ -33,4 +33,4 @@ const ProfileForm = ({ name, job, onNameChange, onJobChange }) => {
   )
 }
 
-export default ProfileForm
+export default EditProfile

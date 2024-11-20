@@ -2,12 +2,12 @@ import profileBtn from '../images/Vector_btn.png'
 import addBtn from '../images/Vector_plus.png'
 import { useState, useEffect } from 'react'
 import PopupWithForm from './PopupWithForm'
-import ProfileForm from './ProfileForm'
-import AddForm from './AddForm'
-import AvatarForm from './AvatarForm'
+import EditProfile from './EditProfile'
+import NewCard from './NewCard'
+import EditAvatar from './EditAvatar'
 import { api } from '../utils/api'
 import Card from './Card'
-import ImagePopup from './ImagePopup'
+import Popup from './Popup'
 import { useRef } from 'react'
 
 export default function Main() {
@@ -166,7 +166,7 @@ export default function Main() {
             onClosePopup={closeAllPopups}
             onSubmit={handleFormSubmit}
           >
-            <ProfileForm
+            <EditProfile
               name={name}
               job={job}
               onNameChange={handleNameChange}
@@ -184,7 +184,7 @@ export default function Main() {
             buttonLabel="Criar"
             onSubmit={handleFormSubmit}
           >
-            <AddForm
+            <NewCard
               title={cardTitle}
               link={cardLink}
               onUpdateTitle={handleTitleChange}
@@ -201,7 +201,7 @@ export default function Main() {
             onClosePopup={closeAllPopups}
             onSubmit={handleFormSubmit}
           >
-            <AvatarForm
+            <EditAvatar
               onUpdateAvatar={handleAvatarChange}
               ref={avatarFormRef}
               avatar={avatar}
@@ -210,7 +210,7 @@ export default function Main() {
         )}
 
         {imagePopupOpen && (
-          <ImagePopup
+          <Popup
             srcImage={selectedCard.link}
             footerLabel={selectedCard.name}
             isOpen={imagePopupOpen}

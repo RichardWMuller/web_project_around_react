@@ -1,4 +1,4 @@
-const AvatarForm = ({ onUpdateAvatar, ref, avatar }) => {
+const EditAvatar = ({ onUpdateAvatar, ref, avatar }) => {
   return (
     <div className="popup__change-avatar-control">
       <input
@@ -17,4 +17,4 @@ const AvatarForm = ({ onUpdateAvatar, ref, avatar }) => {
   )
 }
 
-export default AvatarForm
+export default EditAvatar

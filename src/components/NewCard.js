@@ -1,4 +1,4 @@
-const AddForm = ({ title, link, onUpdateTitle, onUpdateCardLink }) => {
+const NewCard = ({ title, link, onUpdateTitle, onUpdateCardLink }) => {
   return (
     <div className="popupAdd__input-container">
       <div className="popupAdd__control popupAdd__size">
@@ -34,4 +34,4 @@ const AddForm = ({ title, link, onUpdateTitle, onUpdateCardLink }) => {
   )
 }
 
-export default AddForm
+export default NewCard
