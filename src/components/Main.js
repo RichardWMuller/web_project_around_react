@@ -8,10 +8,6 @@ import AvatarForm from './AvatarForm'
 import { api } from '../utils/api'
 import Card from './Card'
 import ImagePopup from './ImagePopup'
-import {
-  CurrentUserProvider,
-  useCurrentUser
-} from '../contexts/CurrentUserContext'
 import { useRef } from 'react'
 
 export default function Main() {
