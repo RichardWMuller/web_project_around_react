@@ -1,4 +1,4 @@
-const AddForm = () => {
+const AddForm = ({ onUpdateTitle, onUpdateCard }) => {
   return (
     <div className="popupAdd__input-container">
       <div className="popupAdd__control popupAdd__size">

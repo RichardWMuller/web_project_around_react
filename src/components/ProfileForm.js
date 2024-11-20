@@ -1,4 +1,4 @@
-const ProfileForm = () => {
+const ProfileForm = ({ name, job, onNameChange, onJobChange }) => {
   return (
     <div className="popup__input-container">
       <div className="popup__control popup__size">
@@ -7,10 +7,11 @@ const ProfileForm = () => {
           className="popup__input-box popup__input-box-name"
           type="text"
           name="name"
-          placeholder="Nome"
           minLength={2}
           maxLength={40}
           required=""
+          value={name}
+          onChange={onNameChange}
         />
         <span className="popup__error" />
       </div>
@@ -20,10 +21,11 @@ const ProfileForm = () => {
           className="popup__input-box popup__input-box-job"
           type="text"
           name="job"
-          placeholder="Sobre"
           minLength={2}
           maxLength={200}
           required=""
+          value={job}
+          onChange={onJobChange}
         />
         <span className="popup__error" />
       </div>

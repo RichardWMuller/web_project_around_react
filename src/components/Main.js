@@ -8,30 +8,49 @@ import AvatarForm from './AvatarForm'
 import { api } from '../utils/api'
 import Card from './Card'
 import ImagePopup from './ImagePopup'
-import { CurrentUserContext } from '../contexts/CurrentUserContext'
+import {
+  CurrentUserProvider,
+  useCurrentUser
+} from '../contexts/CurrentUserContext'
+import { useRef } from 'react'
 
 export default function Main() {
-  const [currentUser, setCurrentUser] = useState({})
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false)
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false)
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false)
-  const [userInfo, setUserInfo] = useState({})
   const [cards, setCards] = useState([])
   const [imagePopupOpen, setImagePopupOpen] = useState(false)
   const [selectedCard, setSelectedCard] = useState()
+  const [name, setName] = useState()
+  const [job, setJob] = useState()
+  const [avatar, setAvatar] = useState()
+  const [currentUser, setCurrentUser] = useState({})
+  const [cardCreate, setCardCreate] = useState()
+  const [cardCreateTitle, setCardCreateTitle] = useState()
+
+  // const { currentUser, setCurrentUser } = useCurrentUser()
 
   useEffect(() => {
-    api.getUser().then(apiUserInfo => {
-      setUserInfo(apiUserInfo)
-    })
+    getUser()
   }, [])
-  console.log(userInfo)
 
   useEffect(() => {
-    api.getInitialCards().then(apiInitalCards => {
-      setCards(apiInitalCards)
-    })
+    getInitialCards()
   }, [])
+
+  const avatarFormRef = useRef(null)
+
+  async function getUser() {
+    const user = await api.getUser()
+    setCurrentUser(user)
+    setName(user.name)
+    setJob(user.about)
+  }
+
+  async function getInitialCards() {
+    const cards = await api.getInitialCards()
+    setCards(cards)
+  }
 
   const handleProfileClick = function () {
     setIsEditProfilePopupOpen(true)
@@ -42,9 +61,89 @@ export default function Main() {
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true)
   }
+  const handleNameChange = event => {
+    setName(event.target.value)
+  }
+  const handleJobChange = event => {
+    setJob(event.target.value)
+  }
+
+  const handleAvatarChange = link => {
+    console.log('avatarFormRef:', avatarFormRef)
+    setAvatar(link.target.value)
+  }
+
+  const handleTitleChange = event => {
+    setCardCreateTitle(event.target.value)
+  }
+
+  const handleCardCreate = link => {
+    setCardCreate(link.target.value)
+  }
+
+  const handleFormSubmit = (event, formName) => {
+    event.preventDefault()
+    if (formName === 'editProfile') {
+      handleUpdateProfile(name, job)
+    }
+
+    if (formName === 'changeAvatar') {
+      handleUpdateAvatar(avatar)
+    }
+
+    if (formName === 'addPlace') {
+      handleCreateNewCard(cardCreateTitle, cardCreate)
+    }
+  }
+
+  async function handleUpdateProfile(userName, userJob) {
+    await api.updateUser(userName, userJob)
+    getUser()
+    closeAllPopups()
+  }
+
+  async function handleUpdateAvatar(avatarFormRef) {
+    await api.updateAvatar(avatarFormRef)
+    getUser()
+    closeAllPopups()
+  }
+
+  async function handleCreateNewCard(title, card) {
+    await api.createCard(title, card)
+    getUser()
+    closeAllPopups()
+  }
+
+  function verifyCardLikes(likes) {
+    const isMyOwnLike = likes.some(like => like._id === currentUser._id)
+    return isMyOwnLike
+  }
+
+  function verifyCardOwner(ownerId) {
+    const isMyOwnCard = ownerId === currentUser._id
+    return isMyOwnCard
+  }
+
+  async function handleCardLike(cardId, isLiked) {
+    isLiked ? handleRemoveLike(cardId) : handleAddLike(cardId)
+  }
+
+  async function handleAddLike(cardId) {
+    await api.addLike(cardId)
+    getInitialCards()
+  }
+
+  async function handleRemoveLike(cardId) {
+    await api.removeLike(cardId)
+    getInitialCards()
+  }
+
+  async function handleCardDelete(cardId) {
+    await api.deleteCard(cardId)
+    getInitialCards()
+  }
 
   const handleCardClick = selectedCardId => {
-    console.log(selectedCardId, 'test')
     const selectedCardById = cards.find(card => card._id === selectedCardId)
     setSelectedCard(selectedCardById)
 
@@ -59,102 +158,121 @@ export default function Main() {
   }
 
   return (
-    <CurrentUserContext.Provider value={currentUser}>
-      <main className="main container">
-        <section className="profile">
-          {isEditProfilePopupOpen && (
-            <PopupWithForm
-              name="editProfile"
-              title="Editar Perfil"
-              isOpen={isEditProfilePopupOpen}
-              onClosePopup={closeAllPopups}
-            >
-              <ProfileForm />
-            </PopupWithForm>
-          )}
-
-          {isAddPlacePopupOpen && (
-            <PopupWithForm
-              name="addPlace"
-              title="Novo local"
-              isOpen={isAddPlacePopupOpen}
-              onClosePopup={closeAllPopups}
-              buttonLabel="Criar"
-            >
-              <AddForm />
-            </PopupWithForm>
-          )}
-
-          {isEditAvatarPopupOpen && (
-            <PopupWithForm
-              name="changeAvatar"
-              title="Alterar a foto do perfil"
-              isOpen={isEditAvatarPopupOpen}
-              onClosePopup={closeAllPopups}
-            >
-              <AvatarForm />
-            </PopupWithForm>
-          )}
-
-          {imagePopupOpen && (
-            <ImagePopup
-              srcImage={selectedCard.link}
-              footerLabel={selectedCard.name}
-              isOpen={imagePopupOpen}
-              onClose={closeAllPopups}
+    // <CurrentUserProvider>
+    <main className="main container">
+      <section className="profile">
+        {isEditProfilePopupOpen && (
+          <PopupWithForm
+            name="editProfile"
+            title="Editar Perfil"
+            isOpen={isEditProfilePopupOpen}
+            onClosePopup={closeAllPopups}
+            onSubmit={handleFormSubmit}
+          >
+            <ProfileForm
+              name={name}
+              job={job}
+              onNameChange={handleNameChange}
+              onJobChange={handleJobChange}
             />
-          )}
+          </PopupWithForm>
+        )}
 
-          <div className="profile__content">
-            <button
-              className="button profile__button-avatar"
-              onClick={handleEditAvatarClick}
-            >
-              <img
-                className="profile__avatar"
-                src={userInfo.avatar}
-                alt="Foto de Perfil"
-              />
-            </button>
-            <div className="profile__info">
-              <div className="profile__title-btn">
-                <h1 className="profile__title">{userInfo.name}</h1>
-                <button
-                  className="button profile__btn-title"
-                  onClick={handleProfileClick}
-                >
-                  <img src={profileBtn} alt="Botão de editar perfil" />
-                </button>
-              </div>
-              <p className="profile__subtitle">{userInfo.about}</p>
+        {isAddPlacePopupOpen && (
+          <PopupWithForm
+            name="addPlace"
+            title="Novo local"
+            isOpen={isAddPlacePopupOpen}
+            onClosePopup={closeAllPopups}
+            buttonLabel="Criar"
+          >
+            <AddForm
+              onUpdateTitle={handleTitleChange}
+              onUpdateCard={handleCardCreate}
+            />
+          </PopupWithForm>
+        )}
+
+        {isEditAvatarPopupOpen && (
+          <PopupWithForm
+            name="changeAvatar"
+            title="Alterar a foto do perfil"
+            isOpen={isEditAvatarPopupOpen}
+            onClosePopup={closeAllPopups}
+            onSubmit={handleFormSubmit}
+          >
+            <AvatarForm
+              onUpdateAvatar={handleAvatarChange}
+              ref={avatarFormRef}
+              avatar={avatar}
+            />
+          </PopupWithForm>
+        )}
+
+        {imagePopupOpen && (
+          <ImagePopup
+            srcImage={selectedCard.link}
+            footerLabel={selectedCard.name}
+            isOpen={imagePopupOpen}
+            onClose={closeAllPopups}
+          />
+        )}
+
+        <div className="profile__content">
+          <button
+            className="button profile__button-avatar"
+            onClick={handleEditAvatarClick}
+          >
+            <img
+              className="profile__avatar"
+              src={currentUser.avatar}
+              alt="Foto de Perfil"
+            />
+          </button>
+          <div className="profile__info">
+            <div className="profile__title-btn">
+              <h1 className="profile__title">{currentUser.name}</h1>
+              <button
+                className="button profile__btn-title"
+                onClick={handleProfileClick}
+              >
+                <img src={profileBtn} alt="Botão de editar perfil" />
+              </button>
             </div>
-            <button
-              className="button profile__btn-add"
-              onClick={handleAddPlaceClick}
-            >
-              <img src={addBtn} alt="Botão de adicionar" />
-            </button>
+            <p className="profile__subtitle">{currentUser.about}</p>
           </div>
-        </section>
-        <section className="elements">
-          <ul className="elements__list" id="elements__list">
-            {cards.map(item => {
-              const { link, name, likes, _id } = item
-
-              return (
-                <Card
-                  key={item._id}
-                  link={link}
-                  name={name}
-                  likes={likes}
-                  _id={_id}
-                  onCardClick={handleCardClick}
-                />
-              )
-            })}
-          </ul>
-        </section>
-      </main>
-    </CurrentUserContext.Provider>
+          <button
+            className="button profile__btn-add"
+            onClick={handleAddPlaceClick}
+          >
+            <img src={addBtn} alt="Botão de adicionar" />
+          </button>
+        </div>
+      </section>
+      <section className="elements">
+        <ul className="elements__list" id="elements__list">
+          {cards.map(card => {
+            const { link, name, likes, _id, owner } = card
+            const isLiked = verifyCardLikes(likes)
+            const isOwner = verifyCardOwner(owner._id)
+            return (
+              <Card
+                key={card._id}
+                link={link}
+                name={name}
+                likes={likes}
+                _id={_id}
+                onCardClick={handleCardClick}
+                isLiked={isLiked}
+                handleCardLike={handleCardLike}
+                isOwner={isOwner}
+                onCardDelete={handleCardDelete}
+              />
+            )
+          })}
+        </ul>
+      </section>
+    </main>
+    // </CurrentUserProvider>
   )
 }

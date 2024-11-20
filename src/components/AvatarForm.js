@@ -1,4 +1,4 @@
-const AvatarForm = () => {
+const AvatarForm = ({ onUpdateAvatar, ref, avatar }) => {
   return (
     <div className="popup__change-avatar-control">
       <input
@@ -6,9 +6,12 @@ const AvatarForm = () => {
         className="popup__change-avatar-input-box popup__change-avatar-input-box-link"
         type="url"
         name="link"
-        placeholder="Link da foto"
+        placeholder="Insira a url da imagem..."
         minLength={15}
-        required=""
+        required
+        ref={ref}
+        onChange={onUpdateAvatar}
+        value={avatar}
       />
     </div>
   )

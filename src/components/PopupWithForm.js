@@ -6,16 +6,23 @@ export default function PopupWithForm({
   buttonLabel = 'Salvar',
   children,
   isOpen,
-  onClosePopup
+  onClosePopup,
+  onSubmit
 }) {
   return (
     <div className={`popup ${isOpen ? 'popup__opened' : ''}`}>
-      <form className="popup__form" name={name}>
+      <form
+        className="popup__form"
+        name={name}
+        onSubmit={event => onSubmit(event, name)}
+        noValidate
+      >
         <button
           type="button"
           className="popup__close-btn"
           onClick={onClosePopup}
         >
+          {console.log(name, 'name')}
           <img
             className="popup__close-btn-icon"
             src={closeBtn}
