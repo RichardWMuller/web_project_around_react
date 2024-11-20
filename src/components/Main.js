@@ -1,13 +1,13 @@
 import profileBtn from '../images/Vector_btn.png'
 import addBtn from '../images/Vector_plus.png'
 import { useState, useEffect } from 'react'
-import PopupWithForm from './PopupWithForm'
+import Popup from './Popup'
 import EditProfile from './EditProfile'
 import NewCard from './NewCard'
 import EditAvatar from './EditAvatar'
 import { api } from '../utils/api'
 import Card from './Card'
-import Popup from './Popup'
+import ImagePopup from './ImagePopup'
 import { useRef } from 'react'
 
 export default function Main() {
@@ -159,7 +159,7 @@ export default function Main() {
     <main className="main container">
       <section className="profile">
         {isEditProfilePopupOpen && (
-          <PopupWithForm
+          <Popup
             name="editProfile"
             title="Editar Perfil"
             isOpen={isEditProfilePopupOpen}
@@ -172,11 +172,11 @@ export default function Main() {
               onNameChange={handleNameChange}
               onJobChange={handleJobChange}
             />
-          </PopupWithForm>
+          </Popup>
         )}
 
         {isAddPlacePopupOpen && (
-          <PopupWithForm
+          <Popup
             name="addPlace"
             title="Novo local"
             isOpen={isAddPlacePopupOpen}
@@ -190,11 +190,11 @@ export default function Main() {
               onUpdateTitle={handleTitleChange}
               onUpdateCardLink={handleChangeCardLink}
             />
-          </PopupWithForm>
+          </Popup>
         )}
 
         {isEditAvatarPopupOpen && (
-          <PopupWithForm
+          <Popup
             name="changeAvatar"
             title="Alterar a foto do perfil"
             isOpen={isEditAvatarPopupOpen}
@@ -206,11 +206,11 @@ export default function Main() {
               ref={avatarFormRef}
               avatar={avatar}
             />
-          </PopupWithForm>
+          </Popup>
         )}
 
         {imagePopupOpen && (
-          <Popup
+          <ImagePopup
             srcImage={selectedCard.link}
             footerLabel={selectedCard.name}
             isOpen={imagePopupOpen}

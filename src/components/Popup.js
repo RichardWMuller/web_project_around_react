@@ -1,20 +1,43 @@
 import closeBtn from '../images/close_icon.svg'
-const Popup = ({ srcImage, footerLabel, isOpen, onClose }) => {
+
+export default function Popup({
+  name,
+  title,
+  buttonLabel = 'Salvar',
+  children,
+  isOpen,
+  onClosePopup,
+  onSubmit
+}) {
   return (
-    <div className={`popup popupImg ${isOpen && 'popupImg-opened'}`}>
-      <div className="popupImg-container">
-        <button type="button" className="popup__close-btn" onClick={onClose}>
+    <div className={`popup ${isOpen ? 'popup__opened' : ''}`}>
+      <form
+        className="popup__form"
+        name={name}
+        onSubmit={event => onSubmit(event, name)}
+        noValidate
+      >
+        <button
+          type="button"
+          className="popup__close-btn"
+          onClick={onClosePopup}
+        >
+          {console.log(name, 'name')}
           <img
-            className="popupImg-close-btn-icon"
+            className="popup__close-btn-icon"
             src={closeBtn}
             alt="botão de fechar janela"
           />
         </button>
-        <img className="popupImg-modal" src={srcImage} alt={footerLabel} />
-        <p className="popupImg-footer">{footerLabel}</p>
-      </div>
+        <h2 className="popup__title">{title}</h2>
+        {children}
+        <button
+          type="submit"
+          className="popup__save-btn popup__button-disabled"
+        >
+          {buttonLabel}
+        </button>
+      </form>
     </div>
   )
 }
-
-export default Popup
