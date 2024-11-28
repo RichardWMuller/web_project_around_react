@@ -17,15 +17,13 @@ export default function Main() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false)
   const [cards, setCards] = useState([])
   const [imagePopupOpen, setImagePopupOpen] = useState(false)
-  const [selectedCard, setSelectedCard] = useState()
-  const [name, setName] = useState()
-  const [job, setJob] = useState()
-  const [avatar, setAvatar] = useState()
+  const [selectedCard, setSelectedCard] = useState('')
+  const [name, setName] = useState('')
+  const [job, setJob] = useState('')
+  const [avatar, setAvatar] = useState('')
   const [currentUser, setCurrentUser] = useState({})
-  const [cardLink, setCardLink] = useState()
-  const [cardTitle, setCardTitle] = useState()
-
-  // const { currentUser, setCurrentUser } = useCurrentUser()
+  const [cardLink, setCardLink] = useState('')
+  const [cardTitle, setCardTitle] = useState('')
 
   useEffect(() => {
     getUser()
